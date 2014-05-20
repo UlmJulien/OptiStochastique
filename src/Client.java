@@ -1,5 +1,7 @@
 import java.io.*;
 import java.net.*;
+
+import Fiches.MonitorDirectory;
  
 public class Client {
     private DatagramSocket socket = null;
@@ -7,17 +9,18 @@ public class Client {
     private String sourceFilePath = "/home/relou/Bureau/cours_master_m2/Optimisation Stochastique/Project/OptiStochastique/data/src/testSrc.txt";
     private String destinationPath = "/home/relou/Bureau/cours_master_m2/Optimisation Stochastique/Project/OptiStochastique/data/dest/";
     private String hostName = "localHost";
+    private InetAddress IPAddress = null;
  
  
-    public Client() {
- 
+    public Client() throws SocketException, UnknownHostException {
+    	this.socket = new DatagramSocket();
+    	IPAddress = InetAddress.getByName(hostName);
     }
  
-    public void createConnection() {
+    public void createConnection(String path) {
+    	this.sourceFilePath = path;
+    	
         try {
- 
-            socket = new DatagramSocket();
-            InetAddress IPAddress = InetAddress.getByName(hostName);
             byte[] incomingData = new byte[1024];
             event = getFileEvent();
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -27,12 +30,12 @@ public class Client {
             DatagramPacket sendPacket = new DatagramPacket(data, data.length, IPAddress, 9876);
             socket.send(sendPacket);
             System.out.println("File sent from client");
-            DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
-            socket.receive(incomingPacket);
-            String response = new String(incomingPacket.getData());
-            System.out.println("Response from server:" + response);
+//            DatagramPacket incomingPacket = new DatagramPacket(incomingData, incomingData.length);
+//            socket.receive(incomingPacket);
+//            String response = new String(incomingPacket.getData());
+//            System.out.println("Response from server:" + response);
             Thread.sleep(2000);
-            System.exit(0);
+//            System.exit(0);
  
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -78,8 +81,14 @@ public class Client {
         return fileEvent;
     }
  
-    public static void main(String[] args) {
-        Client client = new Client();
-        client.createConnection();
+    public static void main(String[] args) throws SocketException, UnknownHostException {
+	    MonitorDirectory md = new MonitorDirectory();
+	    md.checkChanges();
+	    Client c = new Client();
+	    
+	    for (int i = 0; i<md.listOfPatientFiles.size(); i++)
+	    {
+	    	c.createConnection(md.listOfPatientFiles.get(i).toString());
+	    }
     }
 }

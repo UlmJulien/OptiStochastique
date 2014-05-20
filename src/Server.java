@@ -28,15 +28,15 @@ public class Server {
                     System.exit(0);
                 }
                 createAndWriteFile();   // writing the file to hard disk
-                InetAddress IPAddress = incomingPacket.getAddress();
-                int port = incomingPacket.getPort();
-                String reply = "Thank you for the message";
-                byte[] replyBytea = reply.getBytes();
-                DatagramPacket replyPacket =
-                        new DatagramPacket(replyBytea, replyBytea.length, IPAddress, port);
-                socket.send(replyPacket);
+//                InetAddress IPAddress = incomingPacket.getAddress();
+//                int port = incomingPacket.getPort();
+//                String reply = "Thank you for the message";
+//                byte[] replyBytea = reply.getBytes();
+//                DatagramPacket replyPacket =
+//                        new DatagramPacket(replyBytea, replyBytea.length, IPAddress, port);
+//                socket.send(replyPacket);
                 Thread.sleep(3000);
-                System.exit(0);
+//                System.exit(0);
  
             }
  

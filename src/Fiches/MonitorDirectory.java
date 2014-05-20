@@ -20,7 +20,7 @@ public class MonitorDirectory {
 		listOfPatientFiles = new ArrayList<File>();
 		listToSend = new ArrayList<File>();
 		
-		this.getFiles("/home/gui/ProjetOpti/OptiStochastique/patients");
+		this.getFiles("/home/relou/Bureau/cours_master_m2/Optimisation Stochastique/Project/OptiStochastique/data/source");
 		this.getToSend();
 	}
  
@@ -34,7 +34,7 @@ public class MonitorDirectory {
 			   if (listOfFiles[i].isFile()) 
 			   {
 				   files = listOfFiles[i].getName();
-				   System.out.println("PATIENTS : " + files);
+//				   System.out.println("PATIENTS : " + files);
 				   listOfPatientFiles.add(listOfFiles[i]);
 			   }
 			   else if(listOfFiles[i].isDirectory()){
@@ -44,7 +44,7 @@ public class MonitorDirectory {
 	}
 	
 	public void getToSend(){
-		String path = "/home/gui/ProjetOpti/OptiStochastique/toSend";
+		String path = "/home/relou/Bureau/cours_master_m2/Optimisation Stochastique/Project/OptiStochastique/toSend";
 			String files;
 		  File folder = new File(path);
 		  File[] listOfFiles = folder.listFiles(); 
@@ -54,11 +54,11 @@ public class MonitorDirectory {
 			   if (listOfFiles[i].isFile()) 
 			   {
 				   files = listOfFiles[i].getName();
-				   System.out.println("TOSEND : " + files);
+//				   System.out.println("TOSEND : " + files);
 				   listToSend.add(listOfFiles[i]);
 			   }
 			   else if(listOfFiles[i].isDirectory()){
-				   System.out.println("DIR");
+//				   System.out.println("DIR");
 			   }
 		  }
 	}
@@ -76,7 +76,7 @@ public class MonitorDirectory {
 					
 					//NEW VERSION
 					if(file.lastModified()>toSend.lastModified()){
-						System.out.println("NEW VERSION OF " + file.getName() + " AVAILABLE");
+//						System.out.println("NEW VERSION OF " + file.getName() + " AVAILABLE");
 						listToSend.set(j, file);
 					}
 					//OLD VERSION : DO NOTHING
@@ -85,7 +85,7 @@ public class MonitorDirectory {
 			
 			if(!isInToSend) {
 				listToSend.add(file);
-				System.out.println("ADD " + file.getName());
+//				System.out.println("ADD " + file.getName());
 			}
 			
 			createFilesToSend();
@@ -94,7 +94,7 @@ public class MonitorDirectory {
 	
 	public void createFilesToSend(){
 		for(File toSend : listToSend){
-			File file = new File("/home/gui/ProjetOpti/OptiStochastique/toSend/"+toSend.getName());
+			File file = new File("/home/relou/Bureau/cours_master_m2/Optimisation Stochastique/Project/OptiStochastique/toSend"+toSend.getName());
 			try {
 				copyFileUsingFileChannels(toSend, file);
 			} catch (IOException e) {

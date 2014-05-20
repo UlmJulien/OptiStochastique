@@ -27,7 +27,7 @@ public class UserReader {
         
         try 
         {
-            fis = new FileInputStream("/home/gui/ProjetOpti/OptiStochastique/users/users.txt");
+            fis = new FileInputStream("/home/relou/Bureau/cours_master_m2/Optimisation Stochastique/Project/OptiStochastique/users/users.txt");
             reader = new BufferedReader(new InputStreamReader(fis));
           
             System.out.println("...Loading all users from database");
