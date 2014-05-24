@@ -1,23 +1,35 @@
 package Users;
 
 public class User {
-	private String Ip = null;
+	private String host = null;
+	private String port = null;
 	
 	public User(){
-		Ip = "No ip : error";
+		host = "localhost";
+		port = "";
 	}
 	
-	public User(String userip){
-		Ip = userip;
+	public User(String port){
+		this.port = port;
 	}
 	
-	//GET/SET
-	public String getIp(){
-		return Ip;
-	}
 	
-	public void setIp(String ip){
-		Ip = ip;
+
+	
+	public String getHost() {
+		return host;
 	}
 
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getPort() {
+		return port;
+	}
+
+	public void setPort(String port) {
+		this.port = port;
+	}
+	
 }

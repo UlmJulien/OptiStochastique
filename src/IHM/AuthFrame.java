@@ -14,7 +14,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 
 import Fiches.MonitorDirectory;
+import Security.ClientSession;
 import Users.User;
+import Users.UserReader;
 
 import java.awt.Font;
 import java.awt.Color;
@@ -26,6 +28,7 @@ public class AuthFrame {
 	private JTextField textField_1;
 	private JPasswordField passwordField;
 	private List<User> userList;
+	private ClientSession session = null;
 
 	/**
 	 * Create the application.
@@ -44,10 +47,11 @@ public class AuthFrame {
 		}
 	}
 	
-	public boolean accountCheck(String key){
+	public boolean accountCheck(String fullString){
+		String key = UserReader.truncPort(fullString);
 		for(int i=0; i<userList.size();i++){
-			System.out.println(userList.get(i).getIp() + " : " +key);
-			String dbCurrentIp = userList.get(i).getIp();
+			System.out.println(userList.get(i).getPort() + " : " +key);
+			String dbCurrentIp = userList.get(i).getPort();
 			if(dbCurrentIp.compareTo(key)==0) return true;
 		}
 		return false;
@@ -57,6 +61,8 @@ public class AuthFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		session = new ClientSession();
+		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,6 +98,8 @@ public class AuthFrame {
 				if(accountCheck(textField_1.getText())){
 					signInButton.setVisible(false);
 					getFilesButton.setVisible(true);
+					session = new ClientSession(UserReader.truncPort(textField_1.getText()));
+					session.print();
 				}
 				else lblNewLabel.setVisible(true);
 			}
@@ -103,6 +111,8 @@ public class AuthFrame {
 			public void actionPerformed(ActionEvent e) {
 				MonitorDirectory md = new MonitorDirectory();
 				md.checkChanges();
+				
+				session.print();
 			}
 		});
 		
