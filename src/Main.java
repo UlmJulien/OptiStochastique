@@ -21,10 +21,16 @@ public class Main {
 //		}
 //		
 //
-//	    AuthFrame mainframe = new AuthFrame(userList);
-//	    mainframe.run();
+	    AuthFrame mainframe = new AuthFrame(userList);
+	    mainframe.run();
 	    MonitorDirectory md = new MonitorDirectory();
 	    md.checkChanges();
+	    
+	    CryptoMessageRSA crypto = new CryptoMessageRSA();
+	    String cr = CryptoMessageRSA.crypterMessage("kookoo", crypto.getClePublic().getPublicExponent(), crypto.getClePublic().getModulus());
+	    String dcr = crypto.decrypterMessage(cr);
+	    System.out.println("CRYPTE : " + cr);
+	    System.out.println("DECRYPTE : " + dcr);
 	  }
 	 
 	  public static void main(String[] args) {
