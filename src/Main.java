@@ -1,6 +1,7 @@
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.List;
-
-import Security.CryptoMessageRSA;
+import Security.*;
 import Users.User;
 import Users.UserReader;
 import Fiches.*;
@@ -18,14 +19,18 @@ public class Main {
 
 	    AuthFrame mainframe = new AuthFrame(userList);
 	    mainframe.run();
-	    MonitorDirectory md = new MonitorDirectory();
-	    md.checkChanges();
 	    
 //	    CryptoMessageRSA crypto = new CryptoMessageRSA();
 //	    String cr = CryptoMessageRSA.crypterMessage("kookoo", crypto.getClePublic().getPublicExponent(), crypto.getClePublic().getModulus());
 //	    String dcr = crypto.decrypterMessage(cr);
 //	    System.out.println("CRYPTE : " + cr);
 //	    System.out.println("DECRYPTE : " + dcr);
+		
+//	    if (mainframe.getClientSession().getIsLoggedIn()) 
+//	    {
+	    	
+//	    }
+	    
 	  }
 	 
 	  public static void main(String[] args) {

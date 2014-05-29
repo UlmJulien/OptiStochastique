@@ -1,6 +1,8 @@
 package IHM;
 
 
+import Daemons.*;
+
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -8,9 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
 import java.awt.Button;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.SwingConstants;
 
 import Fiches.MonitorDirectory;
@@ -29,13 +33,16 @@ public class AuthFrame {
 	private JPasswordField passwordField;
 	private List<User> userList;
 	private ClientSession session = null;
-
+	
 	/**
 	 * Create the application.
 	 */
 	public AuthFrame(List<User> usrs) {
 		userList = usrs;
 		initialize();
+	}
+	public ClientSession getClientSession () {
+		return this.session;
 	}
 	
 	public void run() {
@@ -68,7 +75,7 @@ public class AuthFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		textField_1 = new JTextField();
+		textField_1 = new JTextField("127.0.0.0:10000");
 		textField_1.setBounds(188, 101, 150, 19);
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
@@ -98,8 +105,21 @@ public class AuthFrame {
 				if(accountCheck(textField_1.getText())){
 					signInButton.setVisible(false);
 					getFilesButton.setVisible(true);
+
 					session = new ClientSession(UserReader.truncPort(textField_1.getText()));
 					session.print();
+					
+					//Instanciation du démon de réception
+					DaemonRcv dr = new DaemonRcv(session);
+					dr.start();
+					
+					session.checkForCrash(UserReader.truncPort(textField_1.getText()));
+						    
+				    // Instanciation du démon d'envoi
+				    DaemonSend ds  = new DaemonSend(session);				    
+				    if(dr.isAlive()){
+				    	ds.run();
+				    }
 				}
 				else lblNewLabel.setVisible(true);
 			}
@@ -109,7 +129,7 @@ public class AuthFrame {
 		
 		getFilesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				MonitorDirectory md = new MonitorDirectory();
+				MonitorDirectory md = new MonitorDirectory(session);
 				md.checkChanges();
 				
 				session.print();
